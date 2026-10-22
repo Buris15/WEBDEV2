@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Task | Task Tracker</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container narrow">
+    <a class="back-link" th:href="@{/tasks}">← Back to tasks</a>
+    <section class="panel form-panel">
+        <p class="eyebrow">CREATE A TASK</p>
+        <h1>New task</h1>
+        <p class="muted">Give your task a title and an optional description.</p>
+
+        <form th:action="@{/tasks}" th:object="${task}" method="post" novalidate>
+            <div class="form-field">
+                <label for="title">Title <span class="required">*</span></label>
+                <input id="title" type="text" th:field="*{title}" placeholder="e.g. Finish my assignment"
+                       th:classappend="${#fields.hasErrors('title') ? ' invalid' : ''}">
+                <p class="field-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error</p>
+                <p class="help-text">Required · 2–100 characters</p>
+            </div>
+
+            <div class="form-field">
+                <label for="description">Description</label>
+                <textarea id="description" rows="5" th:field="*{description}"
+                          placeholder="Add extra details (optional)"
+                          th:classappend="${#fields.hasErrors('description') ? ' invalid' : ''}"></textarea>
+                <p class="field-error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</p>
+                <p class="help-text">Optional · up to 500 characters</p>
+            </div>
+
+            <div class="form-actions">
+                <a class="button secondary" th:href="@{/tasks}">Cancel</a>
+                <button class="button" type="submit">Save task</button>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

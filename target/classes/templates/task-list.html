@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="container">
+    <header class="page-header">
+        <div>
+            <p class="eyebrow">WEBDEV2 · PRELIM LAB EXAM</p>
+            <h1>Task Tracker</h1>
+            <p class="muted">Keep your tasks organized and easy to find.</p>
+        </div>
+        <a class="button" th:href="@{/tasks/new}">+ New Task</a>
+    </header>
+
+    <section class="panel">
+        <div class="section-heading">
+            <h2>Your tasks</h2>
+            <span class="count" th:text="${#lists.size(tasks) + ' total'}">0 total</span>
+        </div>
+
+        <div class="empty-state" th:if="${#lists.isEmpty(tasks)}">
+            <h3>No tasks yet</h3>
+            <p class="muted">Create your first task to get started.</p>
+            <a class="button secondary" th:href="@{/tasks/new}">Create a task</a>
+        </div>
+
+        <div class="task-list" th:unless="${#lists.isEmpty(tasks)}">
+            <article class="task-row" th:each="task : ${tasks}">
+                <div class="task-main">
+                    <span class="status-dot" th:classappend="${task.completed ? ' done' : ''}"></span>
+                    <div>
+                        <h3><a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}">Task title</a></h3>
+                        <p class="muted" th:text="${task.completed ? 'Completed' : 'In progress'}">In progress</p>
+                    </div>
+                </div>
+                <div class="task-actions">
+                    <a class="text-link" th:href="@{/tasks/{id}(id=${task.id})}">View details →</a>
+                    <form th:action="@{/tasks/{id}/completion(id=${task.id})}" method="post" class="inline-form">
+                        <input type="hidden" name="completed" th:value="${!task.completed}">
+                        <input type="hidden" name="returnTo" value="list">
+                        <button class="button secondary small" type="submit"
+                                th:text="${task.completed ? 'Mark in progress' : 'Mark complete'}">Mark complete</button>
+                    </form>
+                    <form th:action="@{/tasks/{id}/delete(id=${task.id})}" method="post" class="inline-form"
+                          onsubmit="return confirm('Are you sure you want to delete this task? This cannot be undone.');">
+                        <button class="button danger small" type="submit">Delete</button>
+                    </form>
+                </div>
+            </article>
+        </div>
+    </section>
+    <footer>Task Tracker · In-memory storage</footer>
+</main>
+</body>
+</html>
