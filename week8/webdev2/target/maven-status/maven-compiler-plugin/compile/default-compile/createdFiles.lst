@@ -1,0 +1,11 @@
+com\example\webdev2\Book.class
+com\example\webdev2\PetSmokeTestRunner.class
+com\example\webdev2\BookController.class
+com\example\webdev2\entity\User.class
+com\example\webdev2\repository\PetRepository.class
+com\example\webdev2\BookRepository.class
+com\example\webdev2\service\PetService.class
+com\example\webdev2\Webdev2Application.class
+com\example\webdev2\entity\Pet.class
+com\example\webdev2\BookService.class
+com\example\webdev2\controller\PetController.class
