@@ -1,0 +1,11 @@
+### Test null microchip error
+
+POST http://localhost:8080/api/pets
+Content-Type: application/json
+
+{
+    "microchipNumber": "FIXED-003",
+    "name": "Buddy",
+    "species": "Dog",
+    "breed": "Labrador"
+}
