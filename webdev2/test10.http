@@ -1,0 +1,56 @@
+### GET all pigs
+GET http://localhost:8080/api/pigs
+
+### GET pig by ID
+GET http://localhost:8080/api/pigs/1
+
+### 2. GET PIG
+GET http://localhost:8080/api/pigs/2
+
+### 1. CREATE PIG
+POST http://localhost:8080/api/pigs
+Content-Type: application/json
+
+{
+    "tagNumber": "PIG-W10-001",
+    "name": "Bantay",
+    "breed": "Landrace",
+    "weightKg": 45.5
+}
+
+### TEST DUPLICATE PIG TAG - EXPECTED 409
+
+POST http://localhost:8080/api/pigs
+Content-Type: application/json
+
+{
+    "tagNumber": "PIG-W10-001",
+    "name": "Duplicate Pig",
+    "breed": "Landrace",
+    "weightKg": 40.0
+}
+
+### 3. PUT PIG
+PUT http://localhost:8080/api/pigs/2
+Content-Type: application/json
+
+{
+    "tagNumber": "PIG-W10-001",
+    "name": "Bantay Updated",
+    "breed": "Duroc",
+    "weightKg": 50.0
+}
+
+### 4. PATCH PIG
+PATCH http://localhost:8080/api/pigs/2
+Content-Type: application/json
+
+{
+    "weightKg": 55.0
+}
+
+### DELETE pig
+DELETE http://localhost:8080/api/pigs/2
+
+### 6. GET DELETED PIG
+GET http://localhost:8080/api/pigs/YOUR_ID
