@@ -1,0 +1,20 @@
+### F1 — paginated pet list (response should contain "content")
+GET http://localhost:8080/api/v1/pets?page=0&size=10&sort=name,asc
+Accept: application/json
+
+### F1 — selected pet details
+GET http://localhost:8080/api/v1/pets/2001
+Accept: application/json
+
+### Legacy CRUD — create pet (ownerId must reference an existing owner)
+POST http://localhost:8080/api/pets
+Content-Type: application/json
+
+{
+  "microchipNumber": "MC-9001",
+  "name": "Testy",
+  "species": "Dog",
+  "breed": "Mixed",
+  "age": 2,
+  "ownerId": 1001
+}

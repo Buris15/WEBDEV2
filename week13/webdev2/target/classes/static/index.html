@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pet Veterinary Clinic</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="/js/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark" aria-hidden="true">VC</div>
+    <div>
+      <p class="eyebrow">CLINIC RECORDS</p>
+      <h1>Pet Veterinary Clinic</h1>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="intro">
+      <p class="eyebrow">PATIENT DIRECTORY</p>
+      <h2>Registered pets</h2>
+      <p>Browse clinic patients and open a record to view owner, appointment, and vaccination details.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="pets-heading">
+      <div class="panel-heading">
+        <div>
+          <h2 id="pets-heading">Pet list</h2>
+          <p class="muted">Records are loaded from the Spring Boot API and MySQL database.</p>
+        </div>
+        <button id="refresh-button" class="button button-secondary" type="button">Refresh</button>
+      </div>
+      <p id="list-status" class="status" role="status" aria-live="polite">Loading pet records…</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Pet</th><th>Species</th><th>Breed</th><th>Owner</th><th>Action</th></tr>
+          </thead>
+          <tbody id="pet-rows"></tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <button id="previous-button" class="button button-secondary" type="button" disabled>Previous</button>
+        <span id="page-label" class="muted">Page 1</span>
+        <button id="next-button" class="button button-secondary" type="button" disabled>Next</button>
+      </div>
+    </section>
+
+    <section class="panel detail-panel" aria-labelledby="detail-heading">
+      <div class="panel-heading">
+        <div>
+          <h2 id="detail-heading">Pet details</h2>
+          <p class="muted">Select a pet from the list to view its complete record.</p>
+        </div>
+      </div>
+      <p id="detail-status" class="status" role="status" aria-live="polite">No pet selected.</p>
+      <div id="pet-detail" class="detail-content" hidden></div>
+    </section>
+  </main>
+  <footer><p>Pet Veterinary Clinic · Academic project</p></footer>
+</body>
+</html>
