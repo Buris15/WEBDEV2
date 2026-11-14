@@ -1,0 +1,141 @@
+@baseUrl = http://localhost:8080
+@petId = 2001
+@newPetId = 99999998
+# After POST /api/pets, replace @newPetId with the actual id returned in the response.
+# 99999998 is only a placeholder, not an existing Week 13 record.
+@appointmentId = 99999999
+# After POST /api/appointments, replace @appointmentId with the actual returned id.
+# Do not use seeded Week 13 appointment 4001 for the Week 14 update/delete tests.
+@ownerId = 1001
+@vetId = 3001
+@date = 2026-11-20
+
+### Relationship options
+GET {{baseUrl}}/api/owners
+Accept: application/json
+
+### Veterinarian options
+GET {{baseUrl}}/api/veterinarians
+Accept: application/json
+
+### Availability for the selected date
+GET {{baseUrl}}/api/vet-availability?date={{date}}
+Accept: application/json
+
+### List pets (existing paginated read interface)
+GET {{baseUrl}}/api/v1/pets?page=0&size=10&sort=name,asc
+Accept: application/json
+
+### Create a pet (use a unique microchip number)
+POST {{baseUrl}}/api/pets
+Content-Type: application/json
+
+{
+  "microchipNumber": "W14-TEST-9001",
+  "name": "Toby Test",
+  "species": "Dog",
+  "breed": "Mixed Breed",
+  "age": 2,
+  "ownerId": {{ownerId}}
+}
+
+### Invalid pet: negative age (expect 400)
+POST {{baseUrl}}/api/pets
+Content-Type: application/json
+
+{
+  "microchipNumber": "W14-INVALID-AGE",
+  "name": "Invalid Age",
+  "species": "Dog",
+  "breed": "Mixed Breed",
+  "age": -1,
+  "ownerId": {{ownerId}}
+}
+
+### Duplicate microchip (expect 409)
+POST {{baseUrl}}/api/pets
+Content-Type: application/json
+
+{
+  "microchipNumber": "MC-0001",
+  "name": "Duplicate Chip",
+  "species": "Dog",
+  "breed": "Mixed Breed",
+  "age": 1,
+  "ownerId": {{ownerId}}
+}
+
+### Read a pet
+GET {{baseUrl}}/api/pets/{{petId}}
+Accept: application/json
+
+### Read the newly created test pet (set @newPetId to the POST response id first)
+GET {{baseUrl}}/api/pets/{{newPetId}}
+Accept: application/json
+
+### Update the test pet (set @newPetId first; PUT sends the complete updatable representation)
+PUT {{baseUrl}}/api/pets/{{newPetId}}
+Content-Type: application/json
+
+{
+  "microchipNumber": "W14-TEST-9001",
+  "name": "Toby Week 14 Updated",
+  "species": "Dog",
+  "breed": "Mixed Breed",
+  "age": 3,
+  "ownerId": {{ownerId}}
+}
+
+### Delete the test pet (set @newPetId first; expect 204; it has no appointments or vaccinations)
+DELETE {{baseUrl}}/api/pets/{{newPetId}}
+
+### Book an appointment (expect 201 and one available slot consumed)
+POST {{baseUrl}}/api/appointments
+Content-Type: application/json
+
+{
+  "appointmentDate": "{{date}}",
+  "reasonForVisit": "Week 14 booking test",
+  "petId": {{petId}},
+  "vetId": {{vetId}}
+}
+
+### List appointments
+GET {{baseUrl}}/api/appointments
+Accept: application/json
+
+### Read the appointment you created (set @appointmentId to the POST response id first)
+GET {{baseUrl}}/api/appointments/{{appointmentId}}
+Accept: application/json
+
+### Update your new appointment only (set @appointmentId first; use a date/vet with available slots)
+PUT {{baseUrl}}/api/appointments/{{appointmentId}}
+Content-Type: application/json
+
+{
+  "appointmentDate": "2026-11-21",
+  "reasonForVisit": "Week 14 updated booking test",
+  "petId": {{petId}},
+  "vetId": 3002
+}
+
+### Missing pet on booking (expect 404; slot count must remain unchanged)
+POST {{baseUrl}}/api/appointments
+Content-Type: application/json
+
+{
+  "appointmentDate": "{{date}}",
+  "reasonForVisit": "Rollback verification — invalid pet id",
+  "petId": 99999999,
+  "vetId": {{vetId}}
+}
+
+### Missing appointment (expect 404)
+GET {{baseUrl}}/api/appointments/99999999
+Accept: application/json
+
+### Cancel your new appointment only (set @appointmentId first; expect 204; slot capacity restored)
+DELETE {{baseUrl}}/api/appointments/{{appointmentId}}
+
+### Delete pet with history (expect 409)
+DELETE {{baseUrl}}/api/pets/{{petId}}
