@@ -1,0 +1,14 @@
+### Anonymous protected request — expected 401
+GET http://localhost:8080/api/pets
+Accept: application/json
+
+### CSRF bootstrap — public, expected 200
+GET http://localhost:8080/api/auth/csrf
+Accept: application/json
+
+### Current user — expected 401 while anonymous, 200 after sign-in
+GET http://localhost:8080/api/auth/me
+Accept: application/json
+
+# For authenticated role and CSRF checks, use the browser steps in security_tests.md.
+# Do not paste live session cookies or CSRF token values into a committed .http file.
